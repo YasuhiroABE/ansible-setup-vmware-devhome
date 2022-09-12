@@ -1,0 +1,40 @@
+---
+- hosts: all
+  vars:
+    mfts_hostname: "devhome"
+    mfts_sshd_listen_ipaddr: 127.0.0.1
+    mfts_sysctl_rules:
+      - { name: net.ipv4.ip_forward, value: 1 }
+    mfts_additional_packages:
+      - elpa-yaml-mode
+      - emacs
+      - dnsmasq
+      - hdparm
+      - ibus-skk
+      - iptables-persistent
+      - python3-venv
+      - rsyslog
+      - vim
+    mfts_setup_directory:
+      - { path: "/etc/netplan/00-installer-config.yaml", state: "absent", owner: "root", group: "root", mode: "0750" }
+    mfts_copy_files:
+      ## netplan
+      - { src: "{{ inventory_dir }}/files/netplan/01.ens33.yaml", dest: "/etc/netplan/01.ens33.yaml", owner: "root", group: "root", mode: "0644" }
+      - { src: "{{ inventory_dir }}/files/netplan/02.ens37.yaml", dest: "/etc/netplan/02.ens37.yaml", owner: "root", group: "root", mode: "0644" }
+      - { src: "{{ inventory_dir }}/files/netplan/03.ens38.yaml", dest: "/etc/netplan/03.ens38.yaml", owner: "root", group: "root", mode: "0644" }
+      ## dnsmasq
+      - { src: "{{ inventory_dir }}/files/dnsmasq/resolv.conf", dest: "/etc/resolv.conf", owner: "root", group: "root", mode: "0644" }
+      - { src: "{{ inventory_dir }}/files/dnsmasq/default.conf", dest: "/etc/dnsmasq.d/default.conf", owner: "root", group: "root", mode: "0644" }
+      - { src: "{{ inventory_dir }}/files/dnsmasq/dnsmasq.resolv.conf", dest: "/etc/dnsmasq.resolv.conf", owner: "root", group: "root", mode: "0644" }
+      - { src: "{{ inventory_dir }}/files/dnsmasq/dnsmasq.hosts", dest: "/etc/dnsmasq.hosts", owner: "root", group: "root", mode: "0644" }
+    mfts_command_after_copyfiles:
+      - { command: "netplan apply", become: "yes" }
+    mfts_systemd_rules:
+      - { name: "systemd-resolved.service", state: "stopped", enabled: "no", daemon_reload: "yes" }
+      - { name: "dnsmasq.service", state: "restarted", enabled: "yes", daemon_reload: "yes" }
+    mfts_iptables_masquerade_rules:
+      - { interface: "ens33", source: "10.1.1.0/24" }
+      - { interface: "ens33", source: "10.2.1.0/24" }
+  roles:
+    - YasuhiroABE.myfavorite-setting
+
