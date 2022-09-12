@@ -6,14 +6,9 @@
     mfts_sysctl_rules:
       - { name: net.ipv4.ip_forward, value: 1 }
     mfts_additional_packages:
-      - elpa-yaml-mode
-      - emacs
       - dnsmasq
-      - hdparm
-      - ibus-skk
       - iptables-persistent
       - python3-venv
-      - rsyslog
       - vim
     mfts_setup_directory:
       - { path: "/etc/netplan/00-installer-config.yaml", state: "absent", owner: "root", group: "root", mode: "0750" }
@@ -29,6 +24,7 @@
       - { src: "{{ inventory_dir }}/files/dnsmasq/dnsmasq.hosts", dest: "/etc/dnsmasq.hosts", owner: "root", group: "root", mode: "0644" }
     mfts_command_after_copyfiles:
       - { command: "netplan apply", become: "yes" }
+      - { command: "/usr/sbin/iptables-save | tee /etc/iptables/rules.v4", become: "yes" }
     mfts_systemd_rules:
       - { name: "systemd-resolved.service", state: "stopped", enabled: "no", daemon_reload: "yes" }
       - { name: "dnsmasq.service", state: "restarted", enabled: "yes", daemon_reload: "yes" }
