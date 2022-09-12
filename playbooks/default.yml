@@ -8,8 +8,6 @@
     mfts_additional_packages:
       - dnsmasq
       - iptables-persistent
-      - python3-venv
-      - vim
     mfts_setup_directory:
       - { path: "/etc/netplan/00-installer-config.yaml", state: "absent", owner: "root", group: "root", mode: "0750" }
     mfts_copy_files:
