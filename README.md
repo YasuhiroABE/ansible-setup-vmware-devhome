@@ -6,6 +6,11 @@ This project contains the ansible project explained at the following article,
 
 It set up a VM of vmware workstation pro with the specific virtual network editor settings. Please refer the diagram at the above article.
 
+Tested Versions
+---------------
+
+* Ubuntu 26.04.1 amd64
+
 Getting Started
 ---------------
 

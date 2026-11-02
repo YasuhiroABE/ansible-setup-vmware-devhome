@@ -1,1 +1,6 @@
-10.1.1.1 devhome.vmnet.yasundial.org
+10.1.1.1 devhome.vmnet.example.org
+
+10.1.1.11 node1.vmnet.example.org
+10.1.1.12 node2.vmnet.example.org
+10.1.1.13 node3.vmnet.example.org
+10.1.1.14 node4.vmnet.example.org

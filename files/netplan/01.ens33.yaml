@@ -3,4 +3,4 @@ network:
   ethernets:
     ens33:
       dhcp4: yes
-      dhcp6: no
+      dhcp6: yes
